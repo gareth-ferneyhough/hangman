@@ -1,58 +1,50 @@
 'use strict;'
-//Include crypto to generate the movie id
 var crypto = require('crypto');
 
 module.exports = function() {
     return {
-        movieList : [],
+        games : {},
         /*
-         * Save the movie inside the "db".
+         * Save the game inside the "db".
          */
-        save(movie) {
-            movie.id = crypto.randomBytes(20).toString('hex'); // fast enough for our purpose
-            this.movieList.push(movie);
+        save(game) {
+            game.id = crypto.randomBytes(20).toString('hex');
+            this.games[game.id] = game;
             return 1;
         },
         /*
-         * Retrieve a movie with a given id or return all the movies if the id is undefined.
+         * Retrieve a game with a given id or return all the games if the id is undefined.
+         * Return an error condition if the game is not found.
          */
-        find(id) {
-            if(id) {
-                return this.movieList.find(element => {
-                        return element.id === id;
-                    });
-            }else {
-                return this.movieList;
+        find(game_id) {
+            if (this.game_id == undefined) {
+                return Object.values(this.games);
             }
+            if (!game_id in this.games) {
+                return -1;
+            }
+            return this.games[game_id];
+
         },
         /*
-         * Delete a movie with the given id.
+         * Delete a game with the given id.
          */
-        remove(id) {
-            var found = 0;
-            this.movieList = this.movieList.filter(element => {
-                    if(element.id === id) {
-                        found = 1;
-                    }else {
-                        return element.id !== id;
-                    }
-                });
-            return found;
+        remove(game_id) {
+            if (!game_id in this.games) {
+                return -1;
+            }
+            delete this.games.game_id;
+            return 1;
         },
         /*
-         * Update a movie with the given id
+         * Update a game with the given id
          */
-        update(id, movie) {
-            var movieIndex = this.movieList.findIndex(element => {
-                return element.id === id;
-            });
-            if(movieIndex !== -1) {
-                this.movieList[movieIndex].title = movie.title;
-                this.movieList[movieIndex].year = movie.year;
-                return 1;
-            }else {
-                return 0;
+        update(game_id, game) {
+            if (!game_id in this.games) {
+                return -1;
             }
+            this.games.game_id = game;
+            return 1;
         }
     }
-};  
+};

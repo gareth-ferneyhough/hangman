@@ -22,6 +22,7 @@ paths:
   /game:
     x-swagger-router-controller: game
     post:
+      operationId: createGame
       summary: Create a new game
       responses:
         "200":
@@ -33,6 +34,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     get:
+      operationId: getAllGames
       summary: Get state of all games
       responses:
         "200":
@@ -47,6 +49,7 @@ paths:
   /{game_id}:
     x-swagger-router-controller: game
     patch:
+      operationId: updateGame
       summary: Play a turn by guessing one letter
       parameters:
         - name: game_id
@@ -70,6 +73,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     get:
+      operationId: getOneGame
       summary: Get game state
       parameters:
         - name: game_id
