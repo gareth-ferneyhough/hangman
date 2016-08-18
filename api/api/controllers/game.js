@@ -2,32 +2,38 @@
    // Include our "db"
    var db = require('../../config/db')();
    // Exports all the functions to perform on the db
-   module.exports = {getAll, save, getOne, update, delMovie};
+   module.exports = { createGame, getOneGame, getAllGames, updateGame };
 
-   //GET /movie operationId
-   function getAll(req, res, next) {
-     res.json({ movies: db.find()});
+   //GET /game
+   function getAllGames(req, res, next) {
+     res.json({ games: db.find()});
    }
-   //POST /movie operationId
-   function save(req, res, next) {
-       res.json({success: db.save(req.body), description: "Movie added to the list!"});
+   //POST /game
+   function createGame(req, res, next) {
+       var game = {
+           word: 'hello',
+           guess_remaining: 5,
+           number_of_letters: 5,
+           state: '_____'
+       }
+       res.json(db.save(game));
    }
-   //GET /movie/{id} operationId
-   function getOne(req, res, next) {
-       var id = req.swagger.params.id.value; //req.swagger contains the path parameters
-       var movie = db.find(id);
-       if(movie) {
-           res.json(movie);
+   //GET /game/{game_id}
+   function getOneGame(req, res, next) {
+       var id = req.swagger.params.game_id.value; //req.swagger contains the path parameters
+       var game = db.find(id);
+       if(game) {
+           res.json(game);
        }else {
            res.status(204).send();
        }
    }
-   //PUT /movie/{id} operationId
-   function update(req, res, next) {
+   //PATCH /game/{id}
+   function updateGame(req, res, next) {
        var id = req.swagger.params.id.value; //req.swagger contains the path parameters
-       var movie = req.body;
-       if(db.update(id, movie)){
-           res.json({success: 1, description: "Movie updated!"});
+       var game = req.body;
+       if(db.update(id, game)){
+           res.json({success: 1, description: "Game updated!"});
        }else{
            res.status(204).send();
        }

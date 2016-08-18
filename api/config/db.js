@@ -1,5 +1,6 @@
 'use strict;'
 var crypto = require('crypto');
+var values = require('object.values');
 
 module.exports = function() {
     return {
@@ -8,9 +9,9 @@ module.exports = function() {
          * Save the game inside the "db".
          */
         save(game) {
-            game.id = crypto.randomBytes(20).toString('hex');
-            this.games[game.id] = game;
-            return 1;
+            game.game_id = crypto.randomBytes(20).toString('hex');
+            this.games[game.game_id] = game;
+            return game;
         },
         /*
          * Retrieve a game with a given id or return all the games if the id is undefined.
