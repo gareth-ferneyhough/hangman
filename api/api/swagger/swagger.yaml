@@ -14,11 +14,13 @@ schemes:
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
+  - application/octet-stream
 # format of the responses to the client (Accepts)
 produces:
   - application/json
 paths:
   /game:
+    x-swagger-router-controller: game
     post:
       summary: Create a new game
       responses:
@@ -26,6 +28,10 @@ paths:
           description: Success
           schema: 
             $ref: "#/definitions/CreateGameResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     get:
       summary: Get state of all games
       responses:
@@ -38,7 +44,8 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
             
-  /{game_id}:            
+  /{game_id}:
+    x-swagger-router-controller: game
     patch:
       summary: Play a turn by guessing one letter
       parameters:
@@ -59,6 +66,22 @@ paths:
             $ref: "#/definitions/GameState"
 
         400:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+      summary: Get game state
+      parameters:
+        - name: game_id
+          in: path
+          type: string
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GameState"
+        default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
