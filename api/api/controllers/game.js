@@ -67,6 +67,29 @@ function hasLetterAlreadyBeenGuessed(game_state, guess) {
     return res;
 }
 
+function hasGameBeenLost(game) {
+    return !game.guesses_remaining;
+}
+
+function hasGameBeenWon(game) {
+    console.log('hasGameBeenOne', game);
+    return (game.state.indexOf('_') === -1 && game.guesses_remaining);
+}
+
+function getUpdatedGameState(game, guess) {
+    var word = game.word;
+    var indicesOfGuessedLetter = word.everyIndex(guess);
+    var newGameState = game.state;
+    for (var i = 0; i < indicesOfGuessedLetter.length; ++i) {
+        newGameState = newGameState.replaceAt(indicesOfGuessedLetter[i], guess);
+    }
+    return newGameState;
+}
+
+function isLetterInSolution(word, guess) {
+    return word.indexOf(guess) !== -1;
+}
+
 //PATCH /game/{id}
 function updateGame(req, res, next) {
     var game_id = req.swagger.params.game_id.value;
@@ -80,25 +103,21 @@ function updateGame(req, res, next) {
         res.status(400).json({ message: 'guess must be one character' });
         return;
     }
-    if (!game.guesses_remaining) {
-        res.json(game);
+    if (hasGameBeenLost(game)|| hasGameBeenWon(game)) {
+        res.json(game); // don't do anything if the game is in lost, or won state
         return;
     }
 
-    var word = game.word;
-    var indicesOfGuessedLetter = word.everyIndex(guess);
     var shouldRemoveSolution = true;
-    if (!indicesOfGuessedLetter.length || hasLetterAlreadyBeenGuessed(game.state, guess)) {
+    if (!isLetterInSolution(game.word, guess) || hasLetterAlreadyBeenGuessed(game.state, guess)) {
         game.bad_guesses.pushUnique(guess);
         game.guesses_remaining--;
         if (!game.guesses_remaining) {
             shouldRemoveSolution = false; // if the user has used up all of his/her guesses, reveal the word
         }
     } else {
-        for (var i = 0; i < indicesOfGuessedLetter.length; ++i) {
-            game.state = game.state.replaceAt(indicesOfGuessedLetter[i], guess);
-        }
-        if (game.state.indexOf('_') === -1) {
+        game.state = getUpdatedGameState(game, guess);
+        if (hasGameBeenWon(game)) {
             shouldRemoveSolution = false; // if the user has won the game, reveal the word
         }
     }

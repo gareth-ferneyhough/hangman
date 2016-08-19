@@ -49,7 +49,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /{game_id}:
+  /game/{game_id}:
     x-swagger-router-controller: game
     patch:
       operationId: updateGame

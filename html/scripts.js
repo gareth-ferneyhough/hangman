@@ -26,8 +26,8 @@ function startNewGame() {
 }
 
 function playTurn() {
-    var guess = document.getElementById('guess');
-    if (guess.value.length !== 1) {
+    var guess = document.getElementById('guess').value;
+    if (guess.length !== 1) {
         alert('You must guess a single letter');
         return;
     }
@@ -35,7 +35,7 @@ function playTurn() {
     var myHeaders = new Headers();
     var myInit = { method: 'PATCH' };
 
-    fetch(`/${game_id}`, myInit)
+    fetch(`/game/${game_id}?guess=${guess}`, myInit)
     .then(function(response) {
         response.json().then(json => {
             updatePage(json);
