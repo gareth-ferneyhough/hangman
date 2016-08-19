@@ -1,11 +1,11 @@
 {
-  "name": "shit",
+  "name": "hangman",
   "version": "0.0.1",
-  "private": true,
-  "description": "New Swagger API Project",
+  "private": false,
+  "description": "Simple Hangman Game",
   "keywords": [],
-  "author": "",
-  "license": "",
+  "author": "Gareth Ferneyhough",
+  "license": "MIT",
   "main": "app.js",
   "dependencies": {
     "express": "^4.12.3",

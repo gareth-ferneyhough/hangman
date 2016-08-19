@@ -1,1 +1,33 @@
-<h1>Hi</h1>
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Hangman</title>
+    <meta name="description" content="Hangman">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Hangman</h1>
+    <img />
+    <input type="button" value="clickme" onclick="startNewGame();" />
+    <div>
+        <form action="/game" method="post">
+        <div>
+            <label>Letter to guess:</label>
+            <input type="text" id="guess" name="guess" />
+        </div>
+        <div class="button">
+            <button type="submit">Send your message</button>
+        </div>
+    </form>
+    </div>
+    Guesses remaining: 4
+    <div>
+    _ _ s _ s
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
