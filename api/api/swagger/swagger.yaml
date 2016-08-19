@@ -28,7 +28,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/CreateGameResponse"
+            $ref: "#/definitions/GameState"
         default:
           description: Error
           schema:
@@ -40,7 +40,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/GetGameListResponse"
+            type: array
+            items:
+              $ref: "#/definitions/GameState"
         default:
           description: Error
           schema:
@@ -67,7 +69,6 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/GameState"
-
         400:
           description: Error
           schema:
@@ -94,17 +95,6 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  CreateGameResponse:
-    required:
-      - game_id
-      - number_of_letters
-    properties:
-      game_id:
-        type: string
-        description: unique identifier that represents the newly created game
-      number_of_letters:
-        type: integer
-        description: number of letters in the game that the user must guess
   GameState:
     required:
       - game_id
@@ -114,6 +104,7 @@ definitions:
     properties:
         game_id:
           type: string
+          description: unique identifier that represents the newly created game
         guesses_remaining:
           type: integer
           description: number of guesses remaining before the game ends in a failed state
@@ -122,22 +113,7 @@ definitions:
           description: String representing the state of the game. Known letters are represented appropriately; unknown letters are represented as underscores.
         number_of_letters:
           type: integer
-  GetGameListResponse:
-    required:
-      - games
-    properties:
-      # The array of games
-      games:
-        type: array
-        items:
-          type: object
-          properties:
-            game_id:
-              type: string
-            guesses_remaining:
-              type: integer
-            state:
-              type: string
+          description: number of letters in the word to be solved
   ErrorResponse:
     required:
       - message
