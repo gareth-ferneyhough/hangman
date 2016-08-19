@@ -12,7 +12,7 @@
    function createGame(req, res, next) {
        var game = {
            word: 'hello',
-           guess_remaining: 5,
+           guesses_remaining: 5,
            number_of_letters: 5,
            state: '_____'
        }
@@ -23,6 +23,8 @@
        var id = req.swagger.params.game_id.value; //req.swagger contains the path parameters
        var game = db.find(id);
        if(game) {
+           delete game.word;
+           console.log('asdfasdf', game)
            res.json(game);
        }else {
            res.status(404).json({message: 'no game with provided id not found'});
