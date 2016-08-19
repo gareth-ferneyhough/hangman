@@ -35,14 +35,15 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     get:
       operationId: getAllGames
-      summary: Get state of all games
+      summary: Get every game_id
       responses:
         "200":
           description: Success
           schema:
             type: array
             items:
-              $ref: "#/definitions/GameState"
+              type: string
+              description: game_id
         default:
           description: Error
           schema:

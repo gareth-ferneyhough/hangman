@@ -1,14 +1,13 @@
 'use strict;'
 var crypto = require('crypto');
 var values = require('object.values');
-
 if (!Object.values) {
     values.shim();
 }
 
-module.exports = function() {
+module.exports = function () {
     return {
-        games : {},
+        games: {},
         /*
          * Save the game inside the "db".
          */
@@ -23,7 +22,7 @@ module.exports = function() {
          */
         find(game_id) {
             if (game_id == undefined) {
-                return Object.values(this.games);
+                return this.games;
             }
             if (!game_id in this.games) {
                 return -1;
