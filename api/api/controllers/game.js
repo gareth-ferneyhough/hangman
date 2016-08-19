@@ -46,7 +46,9 @@ function createGame(req, res, next) {
         state: '_'.repeat(randomWord.length),
         bad_guesses: []
     };
-    res.json(db.save(game));
+    var saved_game = db.save(game);
+    delete saved_game.word;
+    res.json(saved_game);
 }
 //GET /game/{game_id}
 function getOneGame(req, res, next) {
