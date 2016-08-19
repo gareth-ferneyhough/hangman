@@ -61,7 +61,8 @@ function getOneGame(req, res, next) {
 }
 
 function hasLetterAlreadyBeenGuessed(game_state, guess) {
-    return game_state.indexOf(guess) !== -1;
+    var res = game_state.indexOf(guess) !== -1;
+    return res;
 }
 
 //PATCH /game/{id}
@@ -83,24 +84,25 @@ function updateGame(req, res, next) {
     }
 
     var word = game.word;
-    var indices = word.everyIndex(guess);
-    if (!indices.length || hasLetterAlreadyBeenGuessed(game.state, guess)) {
+    var indicesOfGuessedLetter = word.everyIndex(guess);
+    var shouldRemoveSolution = true;
+    if (!indicesOfGuessedLetter.length || hasLetterAlreadyBeenGuessed(game.state, guess)) {
         game.bad_guesses.pushUnique(guess);
         game.guesses_remaining--;
         if (!game.guesses_remaining) {
-            game.word = word; // if the user has used up all of his/her guesses, reveal the word
+            shouldRemoveSolution = false; // if the user has used up all of his/her guesses, reveal the word
         }
     } else {
-        for (var i = 0; i < indices.length; ++i) {
-            game.state = game.state.replaceAt(indices[i], guess);
+        for (var i = 0; i < indicesOfGuessedLetter.length; ++i) {
+            game.state = game.state.replaceAt(indicesOfGuessedLetter[i], guess);
         }
-        console.log(game.state);
         if (game.state.indexOf('_') === -1) {
-            game.word = word; // if the user has used up all of his/her guesses, reveal the word
+            shouldRemoveSolution = false; // if the user has won the game, reveal the word
         }
     }
     db.update(game_id, game);
-    // game still active; delete the word in play and return game state to user
-    delete game.word;
+    if (shouldRemoveSolution) {
+        delete game.word; // don't return the word to the user (unless we re-add it further down)
+    }
     res.json(game);
 }
