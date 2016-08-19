@@ -2,6 +2,10 @@
 var crypto = require('crypto');
 var values = require('object.values');
 
+if (!Object.values) {
+    values.shim();
+}
+
 module.exports = function() {
     return {
         games : {},
@@ -18,7 +22,7 @@ module.exports = function() {
          * Return an error condition if the game is not found.
          */
         find(game_id) {
-            if (this.game_id == undefined) {
+            if (game_id == undefined) {
                 return Object.values(this.games);
             }
             if (!game_id in this.games) {

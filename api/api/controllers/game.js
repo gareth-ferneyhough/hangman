@@ -25,7 +25,7 @@
        if(game) {
            res.json(game);
        }else {
-           res.status(204).send();
+           res.status(404).json({message: 'no game with provided id not found'});
        }
    }
    //PATCH /game/{id}
@@ -47,5 +47,4 @@
        }else{
            res.status(204).send();
        }
-
    }
