@@ -72,7 +72,6 @@ function hasGameBeenLost(game) {
 }
 
 function hasGameBeenWon(game) {
-    console.log('hasGameBeenOne', game);
     return (game.state.indexOf('_') === -1 && game.guesses_remaining);
 }
 
@@ -110,7 +109,9 @@ function updateGame(req, res, next) {
 
     var shouldRemoveSolution = true;
     if (!isLetterInSolution(game.word, guess) || hasLetterAlreadyBeenGuessed(game.state, guess)) {
-        game.bad_guesses.pushUnique(guess);
+        if (!isLetterInSolution(game.word, guess)) {
+            game.bad_guesses.pushUnique(guess);
+        }
         game.guesses_remaining--;
         if (!game.guesses_remaining) {
             shouldRemoveSolution = false; // if the user has used up all of his/her guesses, reveal the word

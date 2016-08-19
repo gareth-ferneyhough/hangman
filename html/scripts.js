@@ -4,13 +4,26 @@ function formatWordInPlay(wordInPlay) {
     return wordInPlay.split('').join('  ');
 }
 
+function formatBadGuesses(bad_guesses) {
+    return bad_guesses.join('  ');
+}
+
 function updatePage(gameState) {
     var guessesRemainingElement = document.getElementById('guesses_remaining');
     var gameBoardElement = document.getElementById('game_board');
+    var badGuessesElement = document.getElementById('bad_guesses');
     guessesRemainingElement.innerHTML = 'Guesses Remaining: ' + gameState.guesses_remaining;
     gameBoardElement.innerHTML = formatWordInPlay(gameState.state);
+    badGuessesElement.innerHTML = formatBadGuesses(gameState.bad_guesses);
+
     game_id = gameState.game_id;
-    console.log(gameState);
+    if (!gameState.guesses_remaining) {
+        document.getElementById('won_message').innerHTML = 'You Lost!';
+    } else if (gameState.state.indexOf('_') === -1) {
+        document.getElementById('won_message').innerHTML = 'You Won!';
+    } else {
+        document.getElementById('won_message').innerHTML = '';
+    }
 }
 
 function startNewGame() {
