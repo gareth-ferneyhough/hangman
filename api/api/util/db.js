@@ -1,6 +1,8 @@
 'use strict;'
 var crypto = require('crypto');
 var values = require('object.values');
+var objectAssign = require('object-assign');
+
 if (!Object.values) {
     values.shim();
 }
@@ -12,9 +14,10 @@ module.exports = function () {
          * Save the game inside the "db".
          */
         save(game) {
-            game.game_id = crypto.randomBytes(20).toString('hex');
-            this.games[game.game_id] = game;
-            return game;
+            var game_clone = objectAssign({}, game);
+            game_clone.game_id = crypto.randomBytes(20).toString('hex');
+            this.games[game_clone.game_id] = game;
+            return game_clone;
         },
         /*
          * Retrieve a game with a given id or return all the games if the id is undefined.

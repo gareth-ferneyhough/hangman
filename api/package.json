@@ -9,6 +9,7 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.12.3",
+    "object-assign": "^4.1.0",
     "object.keys": "^0.1.0",
     "object.values": "^1.0.3",
     "string.prototype.repeat": "^0.2.0",

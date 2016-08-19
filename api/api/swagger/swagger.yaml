@@ -115,6 +115,11 @@ definitions:
         number_of_letters:
           type: integer
           description: number of letters in the word to be solved
+        bad_guesses:
+          type: array
+          items:
+            type: string
+            description: incorrectly guessed letters
   ErrorResponse:
     required:
       - message
